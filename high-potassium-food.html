@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>含鉀食物成份表</title>
+<title>鉀含量食物成分表</title>
 <meta http-equiv=Content-Type content="text/html; charset=utf-8">
 <style>
     body, select, input {
@@ -45,7 +45,7 @@
         z-index: 1;
     }
     #foodList {
-        max-height: calc(100vh - 200px);
+        max-height: calc(100vh - 250px);
         overflow-y: auto;
         border: 1px solid #ddd;
         border-radius: 4px;
@@ -59,7 +59,7 @@
 <body>
 <div class="filter-container">
     <div class="filter-item">
-        <select id="categoryFilter" onchange="applyFilters()">
+        <select id="categoryFilter" onchange="applyCategoryFilters()">
             <option value="">全部顯示</option>
             <option value="穀物類">穀物類</option>
             <option value="澱粉類">澱粉類</option>
@@ -11007,12 +11007,12 @@ document.getElementById('nameFilter').addEventListener('compositionstart', funct
 
 document.getElementById('nameFilter').addEventListener('compositionend', function() {
     isComposing = false;
-    applyFilters();
+    applyNameFilters();
 });
 
 document.getElementById('nameFilter').addEventListener('input', function() {
     if (!isComposing) {
-        applyFilters();
+        applyNameFilters();
     }
 });
 
@@ -11023,37 +11023,52 @@ document.addEventListener("DOMContentLoaded", function() {
     for(let i = 1; i < rows.length; i++) {
         const row = rows[i];
         const value = row.children[2].innerText;
-        if (+value > 250) {
+        if (+value >= 250) {
             row.classList.add('high-k-value');
         }
     }
 });
-    
-function applyFilters() {
+
+function applyCategoryFilters() {
     const categoryFilter = document.getElementById('categoryFilter');
-    const nameFilter = document.getElementById('nameFilter');
     const selectedCategory = categoryFilter.value;
-    const searchText = nameFilter.value.toLowerCase();
-    
     const table = document.getElementById('foodList');
     const rows = table.getElementsByClassName('row');
     
+    // 符合分類篩選條件才顯示
     // 從第二行開始遍歷（跳過表頭）
     for(let i = 1; i < rows.length; i++) {
         const row = rows[i];
         const category = row.children[0].innerText;
-        const name = row.children[1].innerText.toLowerCase();
-        
         const matchCategory = selectedCategory === '' || category === selectedCategory;
+        if(matchCategory) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+        document.getElementById('nameFilter').value = '';
+    }
+}
+
+function applyNameFilters() {
+    const nameFilter = document.getElementById('nameFilter');
+    const searchText = nameFilter.value.toLowerCase();
+    const table = document.getElementById('foodList');
+    const rows = table.getElementsByClassName('row');
+    
+    // 符合名稱篩選條件才顯示
+    // 從第二行開始遍歷（跳過表頭）
+    for(let i = 1; i < rows.length; i++) {
+        const row = rows[i];
+        const name = row.children[1].innerText.toLowerCase();
         const matchName = searchText === '' || name.includes(searchText);
-        
-        // 同時符合分類和名稱篩選條件才顯示
-        if(matchCategory && matchName) {
+        if(matchName) {
             row.style.display = '';
         } else {
             row.style.display = 'none';
         }
     }
+    document.getElementById('categoryFilter').value = '';
 }
 </script>
 </body>
