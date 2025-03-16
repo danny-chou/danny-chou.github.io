@@ -2,7 +2,7 @@
 <head>
 <meta http-equiv=Content-Type content="text/html; charset=utf-8">
 <style>
-    body {
+    body, select, input {
         font-family: "Microsoft JhengHei", Arial, sans-serif;
         font-size: 64px;
         margin: 20px;
@@ -64,7 +64,6 @@
 <body>
 <div class="filter-container">
     <div class="filter-item">
-        <label for="categoryFilter">選擇食品分類：</label>
         <select id="categoryFilter" onchange="applyFilters()">
             <option value="">全部顯示</option>
             <option value="穀物類">穀物類</option>
@@ -88,14 +87,13 @@
         </select>
     </div>
     <div class="filter-item">
-        <label for="nameFilter">搜尋樣品名稱：</label>
-        <input type="text" id="nameFilter" placeholder="輸入樣品名稱關鍵字">
+        <input type="text" id="nameFilter" placeholder="搜尋名稱關鍵字">
     </div>
 </div>
 <div id="foodList">
  <div class="row">
   <div class="col">食品分類</div>
-  <div class="col">樣品名稱</div>
+  <div class="col">名稱</div>
   <div class="col">鉀(mg)</div>
  </div>
  <div class="row">
