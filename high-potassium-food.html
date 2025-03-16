@@ -1,5 +1,6 @@
 <html>
 <head>
+<title>含鉀食物成份表</title>
 <meta http-equiv=Content-Type content="text/html; charset=utf-8">
 <style>
     body, select, input {
@@ -31,6 +32,7 @@
     .col:nth-child(3) {
         flex: 1;  /* 鉀含量欄位 */
         text-align: right;
+        white-space: nowrap;
     }
     .row:nth-child(even) {
         background-color: #f2f2f2;
@@ -47,6 +49,10 @@
         overflow-y: auto;
         border: 1px solid #ddd;
         border-radius: 4px;
+    }
+    /* 鉀含量超過 250 的列以紅色顯示 */
+    .row.high-k-value {
+        color: #ff3333;
     }
 </style>
 </head>
@@ -11010,6 +11016,19 @@ document.getElementById('nameFilter').addEventListener('input', function() {
     }
 });
 
+document.addEventListener("DOMContentLoaded", function() {
+    const table = document.getElementById('foodList');
+    const rows = table.getElementsByClassName('row');
+    // 從第二行開始遍歷（跳過表頭）
+    for(let i = 1; i < rows.length; i++) {
+        const row = rows[i];
+        const value = row.children[2].innerText;
+        if (+value > 250) {
+            row.classList.add('high-k-value');
+        }
+    }
+});
+    
 function applyFilters() {
     const categoryFilter = document.getElementById('categoryFilter');
     const nameFilter = document.getElementById('nameFilter');
